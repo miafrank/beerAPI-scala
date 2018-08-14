@@ -48,8 +48,6 @@ class MyBeerController extends ScalatraServlet with JacksonJsonSupport {
     collection.findAndRemove(MongoDBObject("_id" -> new ObjectId(params("beerId"))))
   }
 
-  //TODO -refactor to use methods to override Jackson methodz
-
   override def parse(in: JsonInput, useBigDecimalForDouble: Boolean, useBigIntForLong: Boolean): JValue = ???
 
   override def parseOpt(in: JsonInput, useBigDecimalForDouble: Boolean, useBigIntForLong: Boolean): Option[JValue] = ???
