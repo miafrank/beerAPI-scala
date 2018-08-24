@@ -1,6 +1,7 @@
 package com.example.app
 
 import com.example.app.models.Beer
+import com.example.app.models.models.Beer
 import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.MongoClient
 import com.mongodb.casbah.commons.MongoDBObject
@@ -27,6 +28,13 @@ class MyBeerController extends ScalatraServlet with JacksonJsonSupport {
     JSON.serialize(mongoColl("beerList"))
   }
 
+
+  //TODO insert graphiql html here
+
+  get("/") {
+
+//    views.html.graphiql()
+  }
   post("/beer/create") {
 
     val postBeer = parsedBody.extract[Beer]
@@ -48,8 +56,8 @@ class MyBeerController extends ScalatraServlet with JacksonJsonSupport {
     val updateBeer = parsedBody.extract[Beer]
     val builder = collection.initializeOrderedBulkOperation
 
-    builder.
-      find(MongoDBObject("_id" -> new ObjectId(params("beerId"))))
+    builder
+      .find(MongoDBObject("_id" -> new ObjectId(params("beerId"))))
       .updateOne($set("name" -> updateBeer.name, "rating" -> updateBeer.rating))
     builder.execute()
   }

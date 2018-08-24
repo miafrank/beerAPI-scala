@@ -12,7 +12,7 @@ resolvers += Classpaths.typesafeReleases
 
 containerPort :=8081
 
-libraryDependencies ++= Seq(
+libraryDependencies ++= Seq("org.sangria-graphql" %% "sangria" % "1.3.0",
   "org.scalatra" %% "scalatra" % ScalatraVersion,
   "org.scalatra" %% "scalatra-scalatest" % ScalatraVersion % "test",
   "ch.qos.logback" % "logback-classic" % "1.2.3" % "runtime",
