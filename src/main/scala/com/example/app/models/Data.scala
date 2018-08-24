@@ -1,18 +1,16 @@
 package com.example.app.models
+import org.bson.types.ObjectId
 import sangria.execution.deferred.HasId
 object Data {
 
   case class Beer(id: Int, name: String,
                   rating: Int)
 
-//  class BeerRepo {
-
     import BeerRepo.beers
 
     def getBeerByRating(rating: Int): Option[Beer] = beers.find(c => c.rating == rating)
     def getBeerByName(name: String): Option[Beer] = beers.find(c => c.name == name)
-    def getBeerById(id: Int) : Option[Beer] = beers.find(c => id equals c.id)
-//  }
+    def getBeerById(id: ObjectId) : Option[Beer] = beers.find(c => id equals c.id)
 
   object BeerRepo {
 
@@ -29,5 +27,4 @@ object Data {
       )
     )
   }
-
 }
