@@ -1,7 +1,6 @@
 package com.example.app
 
-import com.example.app.models.Beer
-import com.example.app.models.models.Beer
+import com.example.app.models.Data.Beer
 import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.MongoClient
 import com.mongodb.casbah.commons.MongoDBObject
@@ -10,6 +9,7 @@ import org.bson.types.ObjectId
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.ScalatraServlet
 import org.scalatra.json._
+import com.example.app.models.{Data => beerData}
 
 class MyBeerController extends ScalatraServlet with JacksonJsonSupport {
 
@@ -48,7 +48,12 @@ class MyBeerController extends ScalatraServlet with JacksonJsonSupport {
 }
 
   get ("/beer/:beerId") {
-    collection.find(MongoDBObject("_id" -> new ObjectId(params("beerId")))).next()
+
+    //get id from params, find in mongo db
+//  val beerId = collection.find(MongoDBObject("_id" -> new ObjectId(params("beerId")))).next()
+
+    //look up beer id in 'Data'(dummy data)
+    beerData.getBeerById(1)
   }
 
   put("/beer/:beerId") {

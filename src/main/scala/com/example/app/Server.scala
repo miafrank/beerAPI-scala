@@ -4,6 +4,6 @@ import org.scalatra.ScalatraServlet
 
 class Server extends ScalatraServlet {
 
-  get("")
+//  get("")
 
 }
