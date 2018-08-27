@@ -13,6 +13,7 @@ object Data {
                    name: Option[String],
                    rating: Option[Int]
                  )
+
   val mongoClient = MongoClient()
   val mongoColl = mongoClient("beerDb")
   private val collection = mongoColl("beerList")
@@ -20,7 +21,6 @@ object Data {
 
     def getAllJsonItems(mongoDocumentName: String)= {JSON.serialize(mongoColl(s"$mongoDocumentName"))}
 
-//    def getJsonItemFromBody[T](t: T) = {Extraction.e
     def getById(id: ObjectId)  = collection.find(MongoDBObject("_id"
       -> new ObjectId(id.toHexString))).next()
 

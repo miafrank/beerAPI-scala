@@ -2,15 +2,10 @@ package com.example.app
 
 import com.example.app.models.Data.Beer
 import com.example.app.models.{Data => data}
-import com.mongodb.casbah.MongoClient
 import org.bson.types.ObjectId
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.ScalatraServlet
 import org.scalatra.json._
-
-//import com.example.app.{MongoDocument => collection}
-//import com.example.app.{MongoCollection => mongoColl}
-//import com.example.app.{MongoClient => mongoClient}
 class MyBeerController extends ScalatraServlet with JacksonJsonSupport {
 
   protected implicit lazy val jsonFormats: Formats = DefaultFormats
@@ -18,10 +13,6 @@ class MyBeerController extends ScalatraServlet with JacksonJsonSupport {
   object BodyParserForJson {
     def parseJsonItem[T](json: String)(implicit m: Manifest[T]) : T = parse(json).extract[T]
   }
-
-  val mongoClient = MongoClient()
-  val mongoColl = mongoClient("beerDb")
-  private val collection = mongoColl("beerList")
 
   before() {
     contentType = formats("json")
@@ -50,8 +41,6 @@ class MyBeerController extends ScalatraServlet with JacksonJsonSupport {
 
   delete("/beer/:beerId") {
     val beer = new ObjectId(params("beerId"))
-
     data.deleteItemById(beer)
     }
-
 }

@@ -1,6 +1,6 @@
 package com.example.app
 
-import com.example.app.models.Data.mongoColl
+import com.example.app.{MongoCollection => mongoColl}
 
 object MongoDocument {
   mongoClient.getMongoClient
