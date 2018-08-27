@@ -1,6 +1,7 @@
 package com.example.app
 
 import com.example.app.models.Data.Beer
+import com.example.app.models.{Data => data}
 import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.MongoClient
 import com.mongodb.casbah.commons.MongoDBObject
@@ -9,13 +10,15 @@ import org.bson.types.ObjectId
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.ScalatraServlet
 import org.scalatra.json._
-import com.example.app.models.{Data => beerData}
-import com.example.app.{MongoBeerData => mongoColl}
-import com.example.app.{MongoBeerListCollection => collection}
 
 class MyBeerController extends ScalatraServlet with JacksonJsonSupport {
 
   protected implicit lazy val jsonFormats: Formats = DefaultFormats
+
+
+  val mongoClient = MongoClient()
+  val mongoColl = mongoClient("beerDb")
+  val collection = mongoColl("beerList")
 
 
   before() {
@@ -42,22 +45,18 @@ class MyBeerController extends ScalatraServlet with JacksonJsonSupport {
       "name" -> postBeer.name,
       "rating" -> postBeer.rating
     )
-    mongoColl.collection.insert(beerDocument)
+    collection.insert(beerDocument)
 }
 
   get ("/beer/:beerId") {
-
-    //get id from params, find in mongo db
-  val beerId = mongoColl.collection.find(MongoDBObject("_id" -> new ObjectId(params("beerId")))).next()
-
-    //look up beer id in 'Data'(dummy data)
-    beerData.getBeerById(beerId)
+    val beerId = new ObjectId(params("beerId"))
+    data.getBeerById(beerId)
   }
 
   put("/beer/:beerId") {
 
     val updateBeer = parsedBody.extract[Beer]
-    val builder = mongoColl.collection.initializeOrderedBulkOperation
+    val builder = collection.initializeOrderedBulkOperation
 
     builder
       .find(MongoDBObject("_id" -> new ObjectId(params("beerId"))))
@@ -66,6 +65,6 @@ class MyBeerController extends ScalatraServlet with JacksonJsonSupport {
   }
 
   delete("/beer/:beerId") {
-    mongoColl.collection.findAndRemove(MongoDBObject("_id" -> new ObjectId(params("beerId"))))
+    collection.findAndRemove(MongoDBObject("_id" -> new ObjectId(params("beerId"))))
   }
 }
