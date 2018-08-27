@@ -3,6 +3,6 @@ package com.example.app
 import com.example.app.models.Data.mongoColl
 
 object MongoDocument {
-  MongoClient.getMongoClient
+  mongoClient.getMongoClient
   def getCollection(mongoDbObject: String) = mongoColl("beerList")
 }
