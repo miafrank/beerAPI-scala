@@ -1,5 +1,6 @@
 package com.example.app
 
+import com.example.app.models.Data.Beer
 import com.example.app.models.{Data => data}
 import com.mongodb.casbah.MongoClient
 import org.json4s.{DefaultFormats, Formats}
@@ -22,20 +23,14 @@ class MyBeerController extends ScalatraServlet with JacksonJsonSupport {
 
   get("/beer") {
     data.getAllJsonItems("beerList")
-//    JSON.serialize(mongoColl("beerList"))
   }
 
-//  post("/beer/create") {
-//
-//    val postBeer = parsedBody.extract[Beer]
-//
-//
-//    val beerDocument = MongoDBObject(
-//      "name" -> postBeer.name,
-//      "rating" -> postBeer.rating
-//    )
-//    collection.insert(beerDocument)
-//}
+  post("/beer/create") {
+
+    val postBeer = parsedBody.extract[Beer]
+    data.createNewItem(postBeer)
+
+}
 //
 //  get ("/beer/:beerId") {
 //    val beerId = new ObjectId(params("beerId"))
