@@ -3,9 +3,14 @@ package com.example.app
 import com.example.app.models.Data.Beer
 import com.example.app.models.{Data => data}
 import com.mongodb.casbah.MongoClient
+import com.mongodb.casbah.commons.MongoDBObject
+import org.bson.types.ObjectId
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.ScalatraServlet
 import org.scalatra.json._
+
+import com.mongodb.casbah.Imports._
+
 //import com.example.app.{MongoDocument => collection}
 //import com.example.app.{MongoCollection => mongoColl}
 //import com.example.app.{MongoClient => mongoClient}
@@ -26,29 +31,31 @@ class MyBeerController extends ScalatraServlet with JacksonJsonSupport {
   }
 
   post("/beer/create") {
-
     val postBeer = parsedBody.extract[Beer]
     data.createNewItem(postBeer)
-
 }
+
+  get ("/beer/:beerId") {
+    val beerId = new ObjectId(params("beerId"))
+    data.getById(beerId)
+  }
+
+    put("/beer/:beerId") {
+
+      val updateBeer = parsedBody.extract[Beer]
+      val builder = collection.initializeOrderedBulkOperation
+
+      builder.
+        find(MongoDBObject("_id" -> new ObjectId(params("beerId"))))
+        .updateOne($set("name" -> updateBeer.name, "rating" -> updateBeer.rating))
+      builder.execute()
+    }
+
+//    data.updateItemById(updateBeer)
+
 //
-//  get ("/beer/:beerId") {
-//    val beerId = new ObjectId(params("beerId"))
-//    data.getById(beerId)
-//  }
-//
-//  put("/beer/:beerId") {
-//
-//    val updateBeer = parsedBody.extract[Beer]
-//    val builder = collection.initializeOrderedBulkOperation
-//
-//    builder
-//      .find(MongoDBObject("_id" -> new ObjectId(params("beerId"))))
-//      .updateOne($set("name" -> updateBeer.name, "rating" -> updateBeer.rating))
-//    builder.execute()
-//  }
-//
-//  delete("/beer/:beerId") {
-//    collection.findAndRemove(MongoDBObject("_id" -> new ObjectId(params("beerId"))))
-//  }
+  delete("/beer/:beerId") {
+    val beer = new ObjectId(params("beerId"))
+    data.deleteItemById(beer)
+  }
 }
