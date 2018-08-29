@@ -8,10 +8,6 @@ import scala.concurrent.{ExecutionContext, Future}
 
 object MongoBeerData {
 
-//  val mongoClient = MongoClient()
-//  val mongoColl = mongoClient("beerDb")
-//  val collection = mongoColl("beerList")
-
   val mongoUri = "mongodb://localhost:27017/beerDb"
   val connection = MongoConnection.parseURI(mongoUri).map(MongoDriver().connection(_))
   val futureConnection = Future.fromTry(connection)
