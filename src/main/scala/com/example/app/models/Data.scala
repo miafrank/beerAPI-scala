@@ -1,17 +1,15 @@
 package com.example.app.models
-import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.MongoClient
-import com.mongodb.casbah.commons.{MongoDBObject, TypeImports}
-import com.mongodb.util.JSON
-import org.bson.types.ObjectId
+import org.json4s._
 import sangria.execution.deferred.HasId
 
-
 object Data {
+  implicit val formats = DefaultFormats
 
   case class Beer(
-                   name: Option[String],
-                   rating: Option[Int]
+                   id: Int,
+                   name: String,
+                   rating: String
                  )
 
   val mongoClient = MongoClient()
@@ -19,30 +17,39 @@ object Data {
   private val collection = mongoColl("beerList")
 
 
-    def getAllJsonItems(mongoDocumentName: String)= {JSON.serialize(mongoColl(s"$mongoDocumentName"))}
+//  object BeerRepo {
+//    import Beer._
+//
+//    val beers = List(
+//      Beer(
+//        id = 1,
+//        name = "Lemon Radler",
+//        rating = 10
+//      ),
+//      Beer(
+//        id = 2,
+//        name = "Grapefruit Radler",
+//        rating = 10
+//      )
+//    )
+//  }
 
-    def getById(id: ObjectId)  = collection.find(MongoDBObject("_id"
-      -> new ObjectId(id.toHexString))).next()
 
-    def createNewItem[T](item: Beer) = {
-      val document = MongoDBObject(
-        "name" -> item.name,
-        "rating" -> item.rating
-      )
-      collection.insert(document)
-    }
-
-    def deleteItemById(id: ObjectId): Option[TypeImports.DBObject] =
-      collection.findAndRemove(MongoDBObject("_id" -> new ObjectId(id.toHexString)))
-
-  def updateItemByObjectId[T](item: Beer, id: ObjectId) = {
-    val builder = collection.initializeOrderedBulkOperation
-
-      builder
-      .find(MongoDBObject("_id" -> new ObjectId(id.toHexString)))
-      .updateOne($set("name" -> item.name, "rating" -> item.rating))
-
-      builder.execute()
-  }
-
+//  val beerName: String = collection.find(MongoDBObject("name" -> beerName)).toString
+//  val beerRating: String = collection.find(MongoDBObject("rating" -> beerRating)).toString
+//  val beerId : String = collection.find(MongoDBObject("_id" -> beerId)).toString
+//
+//  object BeerRepo {
+//    val beer = List(
+//      Beer(
+//        id = beerId,
+//        name = beerName,
+//        rating = beerRating
+//      )
+//    )
+//  }
+//
+//  import BeerRepo.beer
+//
+//  def getBeerById(id: String) : Option[Beer] = beer.find(c => c.id == id)
 }
