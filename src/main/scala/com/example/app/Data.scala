@@ -1,18 +1,13 @@
-package com.example.app.models
-import com.mongodb.casbah.Imports._
+package com.example.app
+
+import com.example.app.models.Beer
+import com.mongodb.casbah.Imports.$set
 import com.mongodb.casbah.MongoClient
 import com.mongodb.casbah.commons.{MongoDBObject, TypeImports}
 import com.mongodb.util.JSON
 import org.bson.types.ObjectId
-import sangria.execution.deferred.HasId
-
 
 object Data {
-
-  case class Beer(
-                   name: Option[String],
-                   rating: Option[Int]
-                 )
 
   val mongoClient = MongoClient()
   val mongoColl = mongoClient("beerDb")

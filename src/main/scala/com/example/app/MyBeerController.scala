@@ -1,7 +1,7 @@
 package com.example.app
 
-import com.example.app.models.Data.Beer
-import com.example.app.models.{Data => data}
+import com.example.app.models.Beer
+import com.example.app.{Data => data}
 import org.bson.types.ObjectId
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.ScalatraServlet
